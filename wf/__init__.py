@@ -13,14 +13,9 @@ from typing import Tuple
 @large_task
 def filter(read1: LatchFile, read2: LatchFile) -> LatchFile:
 
-
-    filename1, extension = os.path.split(str(read1))
-    filename2, extension = os.path.split(str(read2))
-
-
      #create files
     create = ["touch", "mapped.bam", "mapped.sam", "unmapped.bam", "unmapped_sorted.bam",
-                f"{filename1}_filtered.1.fastq", f"{filename2}_filtered.2.fastq"]
+                "file_1_filtered.1.fastq", "file_2_filtered.2.fastq"]
 
     subprocess.run(create)
 
@@ -29,8 +24,8 @@ def filter(read1: LatchFile, read2: LatchFile) -> LatchFile:
     bam_file = Path("mapped.bam").resolve()
     unmapped_reads = Path("unmapped.bam").resolve()
     unmapped_reads_sorted = Path("unmapped_sorted.bam").resolve()
-    file1 = Path(f"{filename1}_filtered.1.fastq").resolve()
-    file2 = Path(f"{filename2}_filtered.2.fastq").resolve()
+    file1 = Path("file_1_filtered.1.fastq").resolve()
+    file2 = Path("file_2_filtered.2.fastq").resolve()
 
     #create output Directory
     _out_dir = ["mkdir","/root/filtered"]
@@ -45,7 +40,7 @@ def filter(read1: LatchFile, read2: LatchFile) -> LatchFile:
         "-2", read2, 
         "-S", mapped_file
         ]
-    #subprocess.run(map)
+    subprocess.run(map)
 
     convert_bam = [
         "samtools", 
@@ -117,8 +112,9 @@ def filman(read1: LatchFile, read2: LatchFile) -> LatchFile:
     from a click of a button.
 
     ### Steps.
-    1. Access the tool from this link
+    1. Access the tool from this link.
     2. Upload files through the provided window and launch the workflow.
+    3. Download the zipped file named `filtered.zip` and extract the sequence file.
 
     ### Caution
     This workflow does not pre-filter poor-quality reads. It is adviced you perform this step before loading data.
